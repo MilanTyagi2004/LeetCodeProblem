@@ -26,8 +26,8 @@ class Solution {
         return dp[k][i][j] = (include % MOD + notInclude % MOD) % MOD;
     }
     public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
-        for (int a = 0; a < 102; a++) {
-    for (int b = 0; b < 102; b++) {
+        for (int a = 0; a < 101; a++) {
+    for (int b = 0; b < 101; b++) {
         Arrays.fill(dp[a][b], -1);
     }
 }

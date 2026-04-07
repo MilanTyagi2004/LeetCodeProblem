@@ -1,6 +1,6 @@
 class Solution {
     int MOD = 1000000007;
-    int[][][] dp = new int [102][102][102];
+    int[][][] dp = new int [101][101][101];
 
     public int solve(int k, int i, int j, int n, int minProfit, int[] group, int[] profit) {
         if (k == profit.length) {

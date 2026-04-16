@@ -1,16 +1,12 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-
-        // brute force Tc- o(N^2)
-        // SC = O(1)
-        int n = nums.length;
-        for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                if((nums[i]+nums[j])==target){
-                    return new int[]{i,j};
-                }
+        HashMap<Integer,Integer> mpp = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int left = target-nums[i];
+            if(mpp.containsKey(left)){
+                return new int[]{mpp.get(left),i};
             }
+            mpp.put(nums[i],i);
         }
-        return new int []{-1,-1};
     }
 }

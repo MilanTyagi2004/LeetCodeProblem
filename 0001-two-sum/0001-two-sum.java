@@ -8,5 +8,6 @@ class Solution {
             }
             mpp.put(nums[i],i);
         }
+        return new int[]{-1,-1};
     }
 }

@@ -1,17 +1,14 @@
 class Solution {
-    int memo(int i,int nums[],Integer dp[]){
-        if(i>=nums.length){
-            return 0;
-        }
-        if(dp[i]!=null){
-            return dp[i];
-        }
-        int take = nums[i] + memo(i+2,nums,dp);
-        int notTake = memo(i+1,nums,dp);
-        return dp[i]=Math.max(take,notTake);
-    }
     public int rob(int[] nums) {
         Integer dp []=new Integer[nums.length+1]; 
-        return memo(0,nums,dp);
+        dp[0] = nums[0];
+        dp[1] =Math.max(nums[0],nums[1]);
+
+        for(int i=2;i<nums.length;i++){
+            int notTake = dp[i-1];
+             int take = nums[i] + dp[i-2];
+             dp[i]= Math.max(take,notTake);
+        }
+        return dp[nums.length-1];
     }
 }

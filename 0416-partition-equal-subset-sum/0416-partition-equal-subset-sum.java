@@ -24,8 +24,22 @@ class Solution {
         if(total%2!=0){
             return false;
         }
-        Boolean dp[][] = new Boolean[nums.length+1][total+1];
-        return memo(0,total/2,nums,dp);
-
+        total  = total/2;
+        boolean dp[][] = new boolean[nums.length+1][total+1];
+        for(int j=0;j<=nums.length;j++){
+            dp[j][0]  = true;
+        }
+        // tabulation 
+        for(int i=nums.length-1;i>=0;i--){
+            for(int j = 0;j<=total;j++){
+                boolean take = false;
+                if(nums[i]<=j){
+                    take = dp[i+1][j-nums[i]];
+                }
+                boolean nottake = dp[i+1][j];
+                dp[i][j] =take || nottake; 
+            }
+        }
+        return dp[0][total];
     }
 }

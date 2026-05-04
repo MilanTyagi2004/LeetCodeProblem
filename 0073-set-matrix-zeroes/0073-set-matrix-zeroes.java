@@ -1,32 +1,27 @@
 class Solution {
-    public void setZeroes(int[][] matrix) {
-        int n = matrix.length;
-        int m=matrix[0].length;
-        // brute force approach
-        for(int i =0;i<n;i++){
+    public void setZeroes(int[][] nums) {
+        int n = nums.length;
+        int m = nums[0].length;
+        boolean row[] = new boolean[n];
+        boolean col[] = new boolean[m];
+        for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(matrix[i][j]==0){
-                    for(int k=0;k<n;k++){
-                        if(matrix[k][j]!=0){
-                         matrix[k][j]=-1000;
-                        }
-                    }
-                    for(int k=0;k<m;k++){
-                        if(matrix[i][k]!=0){
-                         matrix[i][k]=-1000;
-                        }
-                    }
+                if(nums[i][j]==0){
+                    row[i] = true;
+                    col[j] = true;
                 }
             }
         }
 
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(matrix[i][j]==-1000){
-                    matrix[i][j]=0;
+                if(row[i] || col[j]){
+                    nums[i][j]=0;
                 }
             }
         }
 
+
+        
     }
 }

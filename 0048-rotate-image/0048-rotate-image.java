@@ -1,5 +1,7 @@
 class Solution {
     public void rotate(int[][] mat) {
+
+        // phle transpose fir reverse
         int n = mat.length;
         for(int i=0;i<n;i++){
             for(int j=i;j<n;j++){

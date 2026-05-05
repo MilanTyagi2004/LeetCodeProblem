@@ -1,52 +1,51 @@
-import java.util.HashMap;
-
 class Solution {
     public String minWindow(String s, String t) {
-        if (s.length() < t.length()) return "";
+        int n = s.length();
+        if (t.length() > n) return "";
 
-        // Frequency map for characters in t
-        HashMap<Character, Integer> targetMap = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            targetMap.put(c, targetMap.getOrDefault(c, 0) + 1);
+        HashMap<Character, Integer> mpp = new HashMap<>();
+
+        for (char ch : t.toCharArray()) {
+            mpp.put(ch, mpp.getOrDefault(ch, 0) + 1);
         }
 
-        // Variables to track sliding window
-        HashMap<Character, Integer> windowMap = new HashMap<>();
-        int have = 0, need = targetMap.size();
-        int left = 0;
-        int minLen = Integer.MAX_VALUE;
-        int startIdx = 0;
+        int i = 0, j = 0;
+        int requiredCount = t.length();
+        int size = Integer.MAX_VALUE;
+        int start_i = 0;
 
-        // Expand the window
-        for (int right = 0; right < s.length(); right++) {
-            char c = s.charAt(right);
-            windowMap.put(c, windowMap.getOrDefault(c, 0) + 1);
+        while (j < n) {
+            char ch = s.charAt(j);
 
-            if (targetMap.containsKey(c) && 
-                windowMap.get(c).intValue() == targetMap.get(c).intValue()) {
-                have++;
+            if (mpp.containsKey(ch)) {
+                if (mpp.get(ch) > 0) {
+                    requiredCount--;
+                }
+                mpp.put(ch, mpp.get(ch) - 1);
             }
 
-            // Contract the window while it's valid
-            while (have == need) {
-                // Update result
-                if (right - left + 1 < minLen) {
-                    minLen = right - left + 1;
-                    startIdx = left;
+            while (requiredCount == 0) {
+                int curr = j - i + 1;
+
+                if (curr < size) {
+                    size = curr;
+                    start_i = i;
                 }
 
-                // Try to shrink from the left
-                char leftChar = s.charAt(left);
-                windowMap.put(leftChar, windowMap.get(leftChar) - 1);
+                char leftChar = s.charAt(i);
 
-                if (targetMap.containsKey(leftChar) && 
-                    windowMap.get(leftChar) < targetMap.get(leftChar)) {
-                    have--;
+                if (mpp.containsKey(leftChar)) {
+                    mpp.put(leftChar, mpp.get(leftChar) + 1);
+
+                    if (mpp.get(leftChar) > 0) {
+                        requiredCount++;
+                    }
                 }
-                left++;
+
+                i++;
             }
+            j++;
         }
-
-        return minLen == Integer.MAX_VALUE ? "" : s.substring(startIdx, startIdx + minLen);
+        return size == Integer.MAX_VALUE ? "" : s.substring(start_i, start_i + size);
     }
 }

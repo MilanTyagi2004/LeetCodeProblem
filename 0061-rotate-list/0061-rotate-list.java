@@ -9,31 +9,26 @@
  * }
  */
 class Solution {
-    public static ListNode findNthNode(ListNode temp,int k){
-        int cnt = 1;
-        while(temp!=null){
-            if(cnt ==k )return temp;
-            temp = temp.next;
-            cnt++;
-        }
-        return temp;
-    }
-
     public ListNode rotateRight(ListNode head, int k) {
-        ListNode tail = head;
+        if(head==null)return null;
         int len = 1;
-        if(head==null||head.next==null)return head;
-        while(tail.next!=null){
-            tail = tail.next;
+        ListNode temp =head;
+        while(temp.next!=null){
             len++;
+            temp = temp.next; 
         }
-        if(k==0)return head;
-        k=k%len;
-        tail.next=head;
-
-        ListNode newNthNode = findNthNode(head,len-k);
-        head = newNthNode.next;
-        newNthNode.next=null;
+        k  = k% len;
+        if(k==0){
+            return head;
+        }
+        int remain = len-k;
+        ListNode remaining = head;
+        for(int i=1;i<remain;i++){
+            remaining = remaining.next;
+        }
+        temp.next = head;
+        head = remaining.next;
+        remaining.next = null;
         return head;
     }
 }

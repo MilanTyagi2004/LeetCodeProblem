@@ -1,70 +1,94 @@
-import java.util.*;
-
-class Node {
-    int data1, data2;
-    Node next, prev;
-
-    Node(int data1, int data2) {
-        this.data1 = data1;
-        this.data2 = data2;
-        this.next = null;
-        this.prev = null;
-    }
-}
-
 class LRUCache {
+
+    class Node {
+        int key;
+        int value;
+
+        Node prev;
+        Node next;
+
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    int capacity;
+
+    HashMap<Integer, Node> map;
+
     Node head;
-    int size = 0;
-    private int capacity = 0;
-    Map<Integer, Node> map = new HashMap<>();
+    Node tail;
 
     public LRUCache(int capacity) {
+
         this.capacity = capacity;
+
+        map = new HashMap<>();
+
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    private void remove(Node node) {
+
+        Node prevNode = node.prev;
+        Node nextNode = node.next;
+
+        prevNode.next = nextNode;
+        nextNode.prev = prevNode;
+    }
+
+    private void insert(Node node) {
+
+        Node nextNode = head.next;
+
+        head.next = node;
+        node.prev = head;
+
+        node.next = nextNode;
+        nextNode.prev = node;
     }
 
     public int get(int key) {
-        if (!map.containsKey(key)) return -1;
 
-        Node current = map.get(key);
-        if (current != head) {
-            if (current.prev != null) current.prev.next = current.next;
-            if (current.next != null) current.next.prev = current.prev;
-
-            current.prev = null;
-            current.next = head;
-            if (head != null) head.prev = current;
-            head = current;
+        if (!map.containsKey(key)) {
+            return -1;
         }
-        return current.data2;
+
+        Node node = map.get(key);
+
+        remove(node);
+        insert(node);
+
+        return node.value;
     }
 
     public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            Node existing = map.get(key);
-            if (existing.prev != null) existing.prev.next = existing.next;
-            else head = existing.next;
-            if (existing.next != null) existing.next.prev = existing.prev;
 
-            size--;
-            map.remove(key);
+        if (map.containsKey(key)) {
+
+            Node oldNode = map.get(key);
+
+            remove(oldNode);
         }
 
-        Node newNode = new Node(key, value);
-        map.put(key, newNode);
-        newNode.next = head;
-        if (head != null) head.prev = newNode;
-        head = newNode;
-        size++;
+        Node node = new Node(key, value);
 
-        if (size > capacity) {
-            Node current = head;
-            while (current.next != null) current = current.next;
+        insert(node);
 
-            if (current.prev != null) current.prev.next = null;
-            else head = null;
+        map.put(key, node);
 
-            map.remove(current.data1);
-            size--;
+        if (map.size() > capacity) {
+
+            Node lru = tail.prev;
+
+            remove(lru);
+
+            map.remove(lru.key);
         }
     }
 }

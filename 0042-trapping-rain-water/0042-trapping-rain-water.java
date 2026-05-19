@@ -1,32 +1,27 @@
 class Solution {
-    public int trap(int[] height) {
-        int []leftMax = leftPrefix(height);
-        int[] rightMax = rightsuffix(height);
-
-        int total =0;
-
-        for(int i=0;i<height.length;i++){
-            int waterLevel = Math.min(leftMax[i], rightMax[i]);
-            total += waterLevel - height[i];
+    public int trap(int[] nums) {
+        int l = 0;
+        int r = nums.length-1;
+        int lm = Integer.MIN_VALUE;
+        int rm = Integer.MIN_VALUE;
+        int total = 0;
+        while(l<=r){
+            if(nums[l]<=nums[r]){
+                if(lm>nums[l]){
+                    total += lm-nums[l]; 
+                }else{
+                    lm = nums[l];
+                }
+                l=l+1;
+            }else{
+                if(rm>nums[r]){
+                    total += rm-nums[r];
+                }else{
+                    rm = nums[r];
+                }
+                r=r-1;
+            }
         }
         return total;
-    }
-    public int[] leftPrefix(int []arr){
-       int n=arr.length;
-       int []prefix =new int[n];
-       prefix[0] =arr[0];
-       for(int i=1;i<n;i++){
-        prefix[i] = Math.max(prefix[i-1],arr[i]);
-       }
-       return prefix;
-    }
-    public int[] rightsuffix(int arr[]){
-        int n=arr.length;
-       int []suffix =new int[n];
-       suffix[n-1] =arr[n-1];
-       for(int i=n-2;i>=0;i--){
-        suffix[i] = Math.max(suffix[i+1],arr[i]);
-       }
-       return suffix;
     }
 }

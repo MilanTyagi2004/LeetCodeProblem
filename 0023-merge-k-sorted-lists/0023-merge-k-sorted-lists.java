@@ -10,45 +10,38 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if(lists.length==0 ||  lists==null){
+        if(lists==null || lists.length==0){
             return null;
         }
-
-        int interval =1;
+        int interval = 1;
         while(interval<lists.length){
-            for(int i=0;i+interval< lists.length; i+=interval *2){
+            for(int i=0;i+interval<lists.length;i+=interval){
                 lists[i] = merge(lists[i],lists[i+interval]);
             }
             interval*=2;
         }
         return lists[0];
     }
-    ListNode merge(ListNode l1, ListNode l2) {
-
-        ListNode dummy = new ListNode(-1);
-        ListNode temp = dummy;
-
-        while (l1 != null && l2 != null) {
-
-            if (l1.val <= l2.val) {
-                temp.next = l1;
-                l1 = l1.next;
-            } else {
-                temp.next = l2;
-                l2 = l2.next;
+    ListNode merge(ListNode l,ListNode l1){
+        ListNode dummyNode = new ListNode();
+        ListNode curr = dummyNode;
+        while(l!=null && l1!=null){
+            if(l.val<=l1.val){
+            curr.next  = new ListNode(l.val);
+            curr = curr.next;
+            l = l.next;
+            }else{
+                curr.next = new ListNode(l1.val);
+                curr = curr.next;
+                l1 =l1.next;
             }
-
-            temp = temp.next;
         }
-
-        if (l1 != null) {
-            temp.next = l1;
+        if(l!=null){
+            curr.next = l; 
         }
-
-        if (l2 != null) {
-            temp.next = l2;
+        if(l1!=null){
+            curr.next = l1;
         }
-
-        return dummy.next;
+        return dummyNode.next;
     }
 }

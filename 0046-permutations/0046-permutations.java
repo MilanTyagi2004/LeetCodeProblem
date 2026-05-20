@@ -1,24 +1,28 @@
 class Solution {
-    public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> path = new ArrayList<>();
-        boolean freq[] = new boolean[nums.length];
-        findpermute(nums,path,res,freq);
-        return res;
+    void swap(int nums[],int l,int r){
+        int temp  = nums[l];
+        nums[l] = nums[r];
+        nums[r] = temp;
     }
-    public void findpermute(int[] nums,List<Integer> path,List<List<Integer>> res,boolean[] freq){
-        if(path.size()==nums.length){
-            res.add(new ArrayList<>(path));
+    void helper(int idx, int n,int []nums, List<List<Integer>>all){
+        if(idx==n){
+            List<Integer>al = new ArrayList<>();
+            for(int i:nums){
+                al.add(i);
+            }
+            all.add(new ArrayList<>(al));
             return;
         }
-        for(int i=0;i<nums.length;i++){
-            if(!freq[i]){
-                freq[i]=true;
-                path.add(nums[i]);
-                findpermute(nums,path,res,freq);
-                path.remove(path.size()-1);
-                freq[i]=false;
-            }
+        for(int i=idx;i<n;i++){
+            swap(nums,i,idx);
+            helper(idx+1,n,nums,all);
+            swap(nums,i,idx);
         }
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        int n =nums.length;
+        List<List<Integer>>all =new ArrayList<>();
+        helper(0,n,nums,all);
+        return all;
     }
 }

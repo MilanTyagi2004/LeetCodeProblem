@@ -1,14 +1,14 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
-        List<List<String>>all = new ArrayList<>();
-        char board[][] = new char[n][n];
-        for(char r[]:board){
-            Arrays.fill(r,'.');
+        List<List<String>> all =new ArrayList<>();
+        char [][] board = new char[n][n];
+        for(char i[]: board){
+            Arrays.fill(i,'.');
         }
         helper(0,n,board,all);
         return all;
     }
-    void helper(int row,int n, char board[][],List<List<String>>all){
+    void helper(int row, int n, char[][] board,List<List<String>>all){
         if(row==n){
             all.add(construct(board));
         }
@@ -20,29 +20,30 @@ class Solution {
             }
         }
     }
-    List<String> construct(char[][] board){
-        List<String> al = new ArrayList<>();
+    List<String> construct(char board[][]){
+        List<String>al = new ArrayList<>();
         for(char r[]:board){
             al.add(new String(r));
         }
         return al;
     }
-    boolean check(int row,int col,int n, char[][]board){
+    boolean check(int row,int col,int n, char board[][]){
         for(int i=0;i<row;i++){
             if(board[i][col]=='Q'){
-                return false;
+                return false; 
             }
         }
-        for(int i=row-1 , j=col-1;i>=0&&j>=0;j--,i--){
+        for(int i=row-1,j=col-1;i>=0&& j>=0;i--,j--){
             if(board[i][j]=='Q'){
                 return false;
             }
         }
-        for(int i=row-1,j=col+1;i>=0&&j<n;i--,j++){
+        for(int i=row-1,j=col+1;i>=0 && j<n;i--,j++ ){
             if(board[i][j]=='Q'){
                 return false;
             }
         }
         return true;
     }
+
 }

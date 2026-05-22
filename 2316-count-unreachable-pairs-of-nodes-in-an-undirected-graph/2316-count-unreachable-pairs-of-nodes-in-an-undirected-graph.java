@@ -1,54 +1,54 @@
 class Solution {
-    int [] parent;
-    int [] rank;
-    int find(int i){
-        if(i==parent[i]){
-            return i;
+    int parent[];
+    int size[];
+    int find(int x){
+        if(parent[x]==x){
+            return x;
         }
-        parent[i] = find(parent[i]);
-        return parent[i];
+        parent[x] =find(parent[x]);
+        return parent[x];
     }
-    void rank_union(int x, int y) {
-        int px = find(x);
-        int py = find(y);
-        if (px == py) return;
-        if (rank[px] < rank[py]) {
-            parent[px] = py;
-        } else if (rank[px] > rank[py]) {
-            parent[py] = px;
-        } else {
-            parent[py] = px;
-            rank[px]++;
+
+    void union(int x,int y){
+        int x_parent = find(x);
+        int y_parent = find(y);
+        if(x_parent!=y_parent){
+            if(size[y_parent]<size[x_parent]){
+                parent[y_parent] = x_parent;
+                size[x_parent] += size[y_parent]; 
+            }else if(size[y_parent]>size[x_parent]){
+                parent[x_parent] = y_parent;
+                size[y_parent]+=size[x_parent];
+            }else{
+                parent[y_parent]=x_parent;
+                size[x_parent]+=size[y_parent];
+            }
         }
     }
     public long countPairs(int n, int[][] edges) {
-        parent  = new int[n];
-        rank  = new int[n];
-        Arrays.fill(rank,0);
+        parent = new int[n];
+        size = new int[n];
+
         for(int i=0;i<n;i++){
             parent[i] = i;
+            size[i] = 1;
         }
 
-        for(int []edge :edges){
-            int u = edge[0];
-            int v = edge[1];
-            rank_union(u,v);
+        for(int e[]:edges){
+            int u = e[0];
+            int v = e[1];
+            union(u,v);
         }
 
-        Map<Integer,Integer> mpp = new HashMap<>();
+        long ans =0;
+        long remaining = n;
         for(int i=0;i<n;i++){
-            int father = find(i);
-            mpp.put(father,mpp.getOrDefault(father,0)+1);
+            if(parent[i]==i){
+                long siz = size[i];
+                ans += (siz) * (remaining-siz);
+                remaining -= siz; 
+            }
         }
-
-        long result = 0;
-        long remaining  =n;
-
-        for(Map.Entry<Integer,Integer>entry:mpp.entrySet()){
-            long size = entry.getValue();
-            result += size * (remaining - size);
-            remaining -= size;
-        }
-        return result;
+        return ans;
     }
 }

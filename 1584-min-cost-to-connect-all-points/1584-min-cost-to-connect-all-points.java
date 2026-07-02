@@ -13,21 +13,17 @@ class Solution {
     public int minCostConnectPoints(int[][] points) {
 
         int n = points.length;
-
         boolean[] vis = new boolean[n];
-
         PriorityQueue<Pair> pq =
                 new PriorityQueue<>((a, b) -> a.cost - b.cost);
 
         pq.offer(new Pair(0, 0));
-
         int ans = 0;
         int count = 0;
 
         while (count < n) {
 
             Pair cur = pq.poll();
-
             if (vis[cur.node])
                 continue;
 
@@ -36,7 +32,6 @@ class Solution {
             count++;
 
             for (int i = 0; i < n; i++) {
-
                 if (!vis[i]) {
 
                     int dist = Math.abs(points[cur.node][0] - points[i][0]) +
@@ -46,7 +41,6 @@ class Solution {
                 }
             }
         }
-
         return ans;
     }
 }

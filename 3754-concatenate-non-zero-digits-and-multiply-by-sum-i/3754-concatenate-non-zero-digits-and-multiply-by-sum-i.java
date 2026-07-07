@@ -1,5 +1,6 @@
 class Solution {
     public long sumAndMultiply(int n) {
+        // with space and time complexity o(n)
         if(n==0){
             return 0;
         }

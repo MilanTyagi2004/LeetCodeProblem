@@ -1,6 +1,6 @@
 class Solution {
     public long sumAndMultiply(int n) {
-        // with space and time complexity o(n)
+        // with space complexity o(1) and time complexity o(n+m) for reversing and then computing the solution 
         if(n==0){
             return 0;
         }

@@ -4,7 +4,6 @@ class Solution {
         if(n==0){
             return 0;
         }
-        StringBuilder sb = new StringBuilder();
         long rn = 0;
         while(n!=0){
             long dig = n%10;
@@ -12,15 +11,15 @@ class Solution {
             n/=10;
         }
         long sum =0;
+        long num=0;
         while(rn!=0){
             long dig = rn%10;
             if(dig!=0){
                 sum+=dig;
-                sb.append(String.valueOf(dig));
+                num = num*10 +dig;
             }
             rn/=10;
         }
-        long num = Long.parseLong(sb.toString());
         return num*sum;
     }
 }
